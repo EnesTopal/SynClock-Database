@@ -3,6 +3,7 @@ package com.example.SynClock.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,4 +20,14 @@ public class User {
 
     @Column(name = "user_password", nullable = false)
     private String userpassword;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_groups", // Ara tablo ismi
+            joinColumns = @JoinColumn(name = "user_id"), // User tablosundan gelen kolon
+            inverseJoinColumns = @JoinColumn(name = "group_id") // Groups tablosundan gelen kolon
+    )
+    private List<Groups> groups;
+
+
 }
