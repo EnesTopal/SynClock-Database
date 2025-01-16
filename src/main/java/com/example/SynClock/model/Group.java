@@ -8,14 +8,14 @@ import java.util.List;
 @Entity
 @Table(name = "user_groups")
 @Data
-public class Groups {
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "uuid")
     private long uuid;
 
     @Column(name = "group_name", nullable = false)
-    private String groupName; // Grup için bir isim ekleyebilirsiniz.
+    private String groupName;
 
     @ManyToMany(mappedBy = "groups")
     private List<User> users;

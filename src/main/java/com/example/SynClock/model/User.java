@@ -1,10 +1,11 @@
 package com.example.SynClock.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "user")
@@ -23,11 +24,11 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_groups", // Ara tablo ismi
-            joinColumns = @JoinColumn(name = "user_id"), // User tablosundan gelen kolon
-            inverseJoinColumns = @JoinColumn(name = "group_id") // Groups tablosundan gelen kolon
+            name = "user_groups",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    private List<Groups> groups;
+    private List<Group> groups;
 
 
 }

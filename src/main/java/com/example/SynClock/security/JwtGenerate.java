@@ -32,12 +32,12 @@ public class JwtGenerate {
                 .compact();
     }
 
-    public Integer getUserIdFromToken(String token){
+    public Long getUserIdFromToken(String token){
         Claims claims =  (Claims) Jwts.parser()
                 .setSigningKey(APP_SECRET)
                 .parseClaimsJws(token)
                 .getBody();
-        return Integer.parseInt(claims.getSubject());
+        return Long.parseLong(claims.getSubject());
     }
 
     public boolean validateToken(String token) {

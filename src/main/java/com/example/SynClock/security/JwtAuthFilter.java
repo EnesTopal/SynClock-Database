@@ -38,7 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 // Token doğrulama
                 if (jwtGenerate.validateToken(jwt)) {
                     System.out.println("Token geçerli.");
-                    Integer id = jwtGenerate.getUserIdFromToken(jwt);
+                    Long id = jwtGenerate.getUserIdFromToken(jwt);
                     UserDetails user = jwtUserDetailsService.loadUserByid(id);
 
                     // Kullanıcı doğrulama

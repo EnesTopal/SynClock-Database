@@ -1,0 +1,41 @@
+package com.example.SynClock.controllers;
+
+import com.example.SynClock.model.DTOs.CreateGroupDTO;
+import com.example.SynClock.model.DTOs.GroupDTO;
+import com.example.SynClock.model.Group;
+import com.example.SynClock.services.GroupServices;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/groups")
+public class GroupController {
+
+    private final GroupServices groupServices;
+
+    public GroupController(GroupServices groupServices) {
+        this.groupServices = groupServices;
+    }
+
+    @PostMapping
+    public ResponseEntity<GroupDTO> createGroup(@RequestBody CreateGroupDTO groupRequest) {
+        return groupServices.createGroup(groupRequest);
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<String> deleteGroup(@PathVariable Long groupId) {
+        return groupServices.deleteGroup(groupId);
+    }
+
+    @PostMapping("/{groupId}/join")
+    public ResponseEntity<String> joinGroup(@PathVariable Long groupId) {
+        return groupServices.joinGroup(groupId);
+    }
+
+    @GetMapping("/my-groups")
+    public ResponseEntity<List<Group>> getMyGroups() {
+        return groupServices.getMyGroups();
+    }
+}
