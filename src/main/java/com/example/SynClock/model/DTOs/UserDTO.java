@@ -10,15 +10,10 @@ import java.util.List;
 public class UserDTO {
     private long uuid;
     private String username;
-    private String userpassword;
-    private List<Group> groups;
 
     public UserDTO(User user) {
         this.uuid = user.getUuid();
         this.username = user.getUsername();
-        this.userpassword = user.getUserpassword();
-        this.groups = user.getGroups();
     }
-
 }
 

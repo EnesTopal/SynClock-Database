@@ -19,5 +19,8 @@ public class Group {
 
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AlarmClock> alarmClocks;
 }
 

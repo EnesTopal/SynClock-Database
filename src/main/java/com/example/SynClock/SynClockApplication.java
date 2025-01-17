@@ -8,7 +8,7 @@ public class SynClockApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SynClockApplication.class, args);
-		System.out.println("Runs");
+		System.out.println("Runs \uD83D\uDC4D");
 	}
 
 }

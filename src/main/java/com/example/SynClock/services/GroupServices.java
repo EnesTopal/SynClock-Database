@@ -38,6 +38,7 @@ public class GroupServices {
 
         newGroup.setGroupName(groupRequest.getGroupName());
         newGroup.setUsers(newUserList);
+        newGroup.setAlarmClocks(new ArrayList<>());
         return ResponseEntity.status(HttpStatus.CREATED).body(new GroupDTO(newGroup));
     }
 
@@ -65,9 +66,9 @@ public class GroupServices {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User is already a member of the group.");
             }
             group.getUsers().add(user);
-            user.getGroups().add(group);
+//            user.getGroups().add(group);
             groupRepository.save(group);
-            userRepository.save(user);
+//            userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body("User successfully added to the group.");
         }
         else {
