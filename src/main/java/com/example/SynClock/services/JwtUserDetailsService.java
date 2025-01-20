@@ -4,10 +4,12 @@ import com.example.SynClock.model.User;
 import com.example.SynClock.repositories.UserRepository;
 import com.example.SynClock.security.JwtUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtUserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public JwtUserDetailsService(UserRepository userRepository) {
@@ -15,12 +17,14 @@ public class JwtUserDetailsService {
     }
 
 
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username);
-//        return JwtUserDetails.create(user);
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        return JwtUserDetails.create(user);
+    }
     public UserDetails loadUserByid(Long uuid){
         User user = userRepository.findById(uuid).get();
         return JwtUserDetails.create(user);
     }
+
 }

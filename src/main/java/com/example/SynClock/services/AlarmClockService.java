@@ -32,7 +32,6 @@ public class AlarmClockService {
         alarmClock.setTime(createAlarmClockDTO.getTime());
         alarmClock.setGroup(group);
         AlarmClock savedAlarmClock = alarmClockRepository.save(alarmClock);
-//        group.getAlarmClocks().add(savedAlarmClock);
         return ResponseEntity.status(HttpStatus.CREATED).body(new AlarmClockDTO(savedAlarmClock));
     }
 

@@ -24,12 +24,12 @@ public class GroupController {
         return groupServices.createGroup(groupRequest);
     }
 
-    @DeleteMapping("/{groupId}")
-    public ResponseEntity<String> deleteGroup(@PathVariable Long groupId) {
-        return groupServices.deleteGroup(groupId);
+    @DeleteMapping("/delete/{groupId}")
+    public ResponseEntity<String> deleteGroup(@PathVariable Integer groupId) {
+        return groupServices.deleteGroup(groupId.longValue());
     }
 
-    @PostMapping("/{groupId}/join")
+    @PostMapping("/join/{groupId}")
     public ResponseEntity<String> joinGroup(@PathVariable Long groupId) {
         return groupServices.joinGroup(groupId);
     }

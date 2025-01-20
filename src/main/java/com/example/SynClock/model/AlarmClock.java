@@ -15,7 +15,13 @@ public class AlarmClock {
     @Column(name = "time", nullable = false)
     private String time;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
+
+//    @ManyToOne
+//    @JoinColumn(name = "group_id", nullable = false)
+//    private Group group;
 }
+
+

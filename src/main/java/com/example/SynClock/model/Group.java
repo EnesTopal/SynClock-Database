@@ -3,6 +3,7 @@ package com.example.SynClock.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,10 +18,17 @@ public class Group {
     @Column(name = "group_name", nullable = false)
     private String groupName;
 
-    @ManyToMany(mappedBy = "groups")
-    private List<User> users;
+    @ManyToMany(mappedBy = "groups", fetch = FetchType.EAGER)
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AlarmClock> alarmClocks;
+    private List<AlarmClock> alarmClocks = new ArrayList<>();
+
+
 }
 
+//    @ManyToMany(mappedBy = "groups")
+//    private List<User> users;
+//
+//    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AlarmClock> alarmClocks;

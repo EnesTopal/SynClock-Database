@@ -1,0 +1,10 @@
+-- Delete all alarm clocks if group get deleted
+ALTER TABLE alarm_clock
+ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES user_groups (uuid) ON DELETE CASCADE;
+
+--May-to-Many middle table constraints
+ALTER TABLE user_to_groups
+ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_data (uuid) ON DELETE CASCADE;
+ALTER TABLE user_to_groups
+ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES user_groups (uuid) ON DELETE CASCADE;
+

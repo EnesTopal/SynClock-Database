@@ -2,6 +2,7 @@ package com.example.SynClock.controllers;
 
 import com.example.SynClock.model.DTOs.CreateUserDTO;
 import com.example.SynClock.model.DTOs.UserDTO;
+import com.example.SynClock.security.JwtGenerate;
 import com.example.SynClock.services.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,18 +12,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserServices userServices;
+    private final JwtGenerate jwtGenerate;
 
-    public UserController(UserServices userServices) {
+    public UserController(UserServices userServices, JwtGenerate jwtGenerate) {
         this.userServices = userServices;
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDTO> createAccount(@RequestBody CreateUserDTO userRequest) {
-        return userServices.createAccount(userRequest);
+        this.jwtGenerate = jwtGenerate;
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long userId) {
-        return userServices.deleteAccount(userId);
+    public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
+        return userServices.deleteAccount(userId.longValue());
     }
 }

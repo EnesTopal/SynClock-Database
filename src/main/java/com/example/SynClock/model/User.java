@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_data")
 @Data
 public class User {
     @Id
@@ -22,13 +22,22 @@ public class User {
     @Column(name = "user_password", nullable = false)
     private String userpassword;
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_groups",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id")
+            name = "user_to_groups",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "uuid"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "uuid")
     )
-    private List<Group> groups;
+    @JsonIgnore
+    private List<Group> groups = new ArrayList<>();
+
 
 
 }
+//    @ManyToMany
+//    @JoinTable(
+//            name = "user_groups",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "group_id")
+//    )
+//    private List<Group> groups;

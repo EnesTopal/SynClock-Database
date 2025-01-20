@@ -21,8 +21,8 @@ public class AlarmClockController {
         return alarmClockService.createAlarmClock(createAlarmClockDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAlarmClock(@PathVariable("id") Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteAlarmClock(@PathVariable Long id) {
         return alarmClockService.deleteAlarmClock(id);
     }
 }
