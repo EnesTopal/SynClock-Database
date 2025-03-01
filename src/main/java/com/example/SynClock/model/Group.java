@@ -23,8 +23,6 @@ public class Group {
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AlarmClock> alarmClocks = new ArrayList<>();
-
-
 }
 
 //    @ManyToMany(mappedBy = "groups")

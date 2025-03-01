@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class CreateAlarmClockDTO {
     private String time;
-    private Long groupId;
+    private Integer groupId;
 }

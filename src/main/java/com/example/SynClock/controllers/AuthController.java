@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,24 +40,58 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //    @PostMapping("/login")
+//    private String login(@RequestBody CreateUserDTO loginRequest) {
+//        UsernamePasswordAuthenticationToken authenticationToken =
+//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getUserpassword());
+//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwtToken = jwtGenerate.generateJwtToken(authentication);
+//        return "Bearer" + jwtToken;
+//    }
+
     @PostMapping("/login")
-    private String login(@RequestBody CreateUserDTO loginRequest) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody CreateUserDTO loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getUserpassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwtToken = jwtGenerate.generateJwtToken(authentication);
-        return "Bearer" + jwtToken;
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", "Bearer " + jwtToken);
+
+        return ResponseEntity.ok(response);
     }
 
+
+//    @PostMapping("/register")
+//    public ResponseEntity<String> register(@RequestBody CreateUserDTO registerRequest) {
+//        if (userServices.getOneUserByUserName(registerRequest.getUsername()) != null) {
+//            return new ResponseEntity<>("Username already in use", HttpStatus.BAD_REQUEST);
+//        }
+//        registerRequest.setUserpassword(passwordEncoder.encode(registerRequest.getUserpassword()));
+//        UserDTO savedUser = userServices.createAccount(registerRequest).getBody();
+//        return new ResponseEntity<>("User succesfully registered\n" + savedUser, HttpStatus.CREATED);
+//    }
+
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody CreateUserDTO registerRequest) {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody CreateUserDTO registerRequest) {
         if (userServices.getOneUserByUserName(registerRequest.getUsername()) != null) {
-            return new ResponseEntity<>("Username already in use", HttpStatus.BAD_REQUEST);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Username already in use");
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
+
         registerRequest.setUserpassword(passwordEncoder.encode(registerRequest.getUserpassword()));
         UserDTO savedUser = userServices.createAccount(registerRequest).getBody();
-        return new ResponseEntity<>("User succesfully registered\n" + savedUser, HttpStatus.CREATED);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "User successfully registered");
+        response.put("user", savedUser);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
 
 }

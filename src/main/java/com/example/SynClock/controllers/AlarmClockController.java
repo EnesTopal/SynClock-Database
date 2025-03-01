@@ -16,7 +16,7 @@ public class AlarmClockController {
         this.alarmClockService = alarmClockService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AlarmClockDTO> createAlarmClock(@RequestBody CreateAlarmClockDTO createAlarmClockDTO) {
         return alarmClockService.createAlarmClock(createAlarmClockDTO);
     }

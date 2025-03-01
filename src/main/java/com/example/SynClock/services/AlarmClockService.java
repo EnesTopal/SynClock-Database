@@ -25,7 +25,7 @@ public class AlarmClockService {
     }
 
     public ResponseEntity<AlarmClockDTO> createAlarmClock(CreateAlarmClockDTO createAlarmClockDTO) {
-        Group group = groupRepository.findById(createAlarmClockDTO.getGroupId())
+        Group group = groupRepository.findById(createAlarmClockDTO.getGroupId().longValue())
                 .orElseThrow(() -> new RuntimeException("Group not found with ID: " + createAlarmClockDTO.getGroupId()));
 
         AlarmClock alarmClock = new AlarmClock();

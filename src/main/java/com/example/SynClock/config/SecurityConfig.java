@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Authentication endpointlerine izin ver
                         .requestMatchers("/admin/**").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
                         .anyRequest().authenticated() // Diğer tüm endpointler için kimlik doğrulama iste
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // JWT Auth Filter ekle

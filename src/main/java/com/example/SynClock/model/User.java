@@ -31,8 +31,6 @@ public class User {
     @JsonIgnore
     private List<Group> groups = new ArrayList<>();
 
-
-
 }
 //    @ManyToMany
 //    @JoinTable(

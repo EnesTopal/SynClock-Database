@@ -7,9 +7,11 @@ import lombok.Data;
 public class AlarmClockDTO {
     private Long uuid;
     private String time;
+    private Long groupId;
 
     public AlarmClockDTO(AlarmClock alarmClock) {
         this.uuid = alarmClock.getUuid();
         this.time = alarmClock.getTime();
+        this.groupId = alarmClock.getGroup().getUuid();
     }
 }

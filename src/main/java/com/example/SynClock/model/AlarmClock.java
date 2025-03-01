@@ -19,9 +19,10 @@ public class AlarmClock {
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
+}
+
 //    @ManyToOne
 //    @JoinColumn(name = "group_id", nullable = false)
 //    private Group group;
-}
 
 
