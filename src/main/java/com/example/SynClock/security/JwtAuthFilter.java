@@ -74,11 +74,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 
 
+//    private String extractToken(HttpServletRequest request) {
+//        String bearer = request.getHeader("Authorization");
+//        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
+//            return bearer.substring("Bearer".length() + 1);
+//        }
+//        return null;
+//    }
+
     private String extractToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring("Bearer".length() + 1);
+
+        System.out.println("Gelen Authorization Header: " + bearer);
+
+
+        if (bearer != null && bearer.startsWith("Bearer ")) {
+            String token = bearer.substring(7).trim();
+            System.out.println("Çıkarılan Token: " + token);
+            return token;
         }
+
+        System.out.println("Token uygun formatta değil!");
         return null;
     }
+
 }

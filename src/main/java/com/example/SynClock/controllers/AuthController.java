@@ -59,7 +59,7 @@ public class AuthController {
         String jwtToken = jwtGenerate.generateJwtToken(authentication);
 
         Map<String, String> response = new HashMap<>();
-        response.put("token", "Bearer " + jwtToken);
+        response.put("token", jwtToken);
 
         return ResponseEntity.ok(response);
     }
