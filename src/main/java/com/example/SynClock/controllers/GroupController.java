@@ -1,5 +1,6 @@
 package com.example.SynClock.controllers;
 
+import com.example.SynClock.model.ApiResponse;
 import com.example.SynClock.model.DTOs.CreateGroupDTO;
 import com.example.SynClock.model.DTOs.GroupDTO;
 import com.example.SynClock.model.Group;
@@ -20,22 +21,27 @@ public class GroupController {
     }
 
     @PostMapping
-    public ResponseEntity<GroupDTO> createGroup(@RequestBody CreateGroupDTO groupRequest) {
+    public ResponseEntity<ApiResponse<GroupDTO>> createGroup(@RequestBody CreateGroupDTO groupRequest) {
         return groupServices.createGroup(groupRequest);
     }
 
     @DeleteMapping("/delete/{groupId}")
-    public ResponseEntity<String> deleteGroup(@PathVariable Integer groupId) {
+    public ResponseEntity<ApiResponse<String>> deleteGroup(@PathVariable Integer groupId) {
         return groupServices.deleteGroup(groupId.longValue());
     }
 
     @PostMapping("/join/{groupId}")
-    public ResponseEntity<String> joinGroup(@PathVariable Long groupId) {
+    public ResponseEntity<ApiResponse<String>> joinGroup(@PathVariable Long groupId) {
         return groupServices.joinGroup(groupId);
     }
 
+    @PostMapping("/leave/{groupId}")
+    public ResponseEntity<ApiResponse<String>> leaveGroup(@PathVariable Long groupId) {
+        return groupServices.leaveGroup(groupId);
+    }
+
     @GetMapping("/my-groups")
-    public ResponseEntity<List<Group>> getMyGroups() {
+    public ResponseEntity<ApiResponse<List<Group>>> getMyGroups() {
         return groupServices.getMyGroups();
     }
 }

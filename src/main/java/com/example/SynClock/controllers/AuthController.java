@@ -41,40 +41,17 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //    @PostMapping("/login")
-//    private String login(@RequestBody CreateUserDTO loginRequest) {
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getUserpassword());
-//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String jwtToken = jwtGenerate.generateJwtToken(authentication);
-//        return "Bearer" + jwtToken;
-//    }
-
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody CreateUserDTO loginRequest) {
+    public ResponseEntity<ApiResponse<String>> login(@RequestBody CreateUserDTO loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getUserpassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwtToken = jwtGenerate.generateJwtToken(authentication);
 
-        Map<String, String> response = new HashMap<>();
-        response.put("token", jwtToken);
-
+        ApiResponse<String> response = new ApiResponse<>("Login successful", jwtToken);
         return ResponseEntity.ok(response);
     }
-
-
-//    @PostMapping("/register")
-//    public ResponseEntity<String> register(@RequestBody CreateUserDTO registerRequest) {
-//        if (userServices.getOneUserByUserName(registerRequest.getUsername()) != null) {
-//            return new ResponseEntity<>("Username already in use", HttpStatus.BAD_REQUEST);
-//        }
-//        registerRequest.setUserpassword(passwordEncoder.encode(registerRequest.getUserpassword()));
-//        UserDTO savedUser = userServices.createAccount(registerRequest).getBody();
-//        return new ResponseEntity<>("User succesfully registered\n" + savedUser, HttpStatus.CREATED);
-//    }
 
     @PostMapping("/register")
     public <T> ResponseEntity<ApiResponse<T>> register(@RequestBody CreateUserDTO registerRequest) {

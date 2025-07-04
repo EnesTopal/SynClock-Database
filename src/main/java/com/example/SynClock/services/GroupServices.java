@@ -1,5 +1,6 @@
 package com.example.SynClock.services;
 
+import com.example.SynClock.model.ApiResponse;
 import com.example.SynClock.model.DTOs.CreateGroupDTO;
 import com.example.SynClock.model.DTOs.GroupDTO;
 import com.example.SynClock.model.Group;
@@ -28,7 +29,7 @@ public class GroupServices {
         this.userTokenServices = userTokenServices;
     }
 
-    public ResponseEntity<GroupDTO> createGroup(CreateGroupDTO groupRequest) {
+    public ResponseEntity<ApiResponse<GroupDTO>> createGroup(CreateGroupDTO groupRequest) {
         Group newGroup = new Group();
         Long userId = userTokenServices.validateAndExtractUserId();
         User creator = userRepository.findById(userId)
@@ -39,22 +40,23 @@ public class GroupServices {
         newGroup.getUsers().add(creator);
         creator.getGroups().add(newGroup);
         groupRepository.save(newGroup);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new GroupDTO(newGroup));
+        GroupDTO groupDTO = new GroupDTO(newGroup);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>("Group successfully created", groupDTO));
     }
 
-    public ResponseEntity<String> deleteGroup(Long groupId) {
+    public ResponseEntity<ApiResponse<String>> deleteGroup(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
             groupRepository.delete(group);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Success: Group and associated data deleted successfully.");
+            return ResponseEntity.ok(new ApiResponse<>("Group and associated data deleted successfully"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Group not found: No group matching the given ID was found.");
+                .body(new ApiResponse<>("Group not found: No group matching the given ID was found."));
     }
 
-    public ResponseEntity<String> joinGroup(Long groupId) {
+    public ResponseEntity<ApiResponse<String>> joinGroup(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
@@ -63,19 +65,21 @@ public class GroupServices {
                     .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
             if (group.getUsers().contains(user)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User is already a member of the group.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ApiResponse<>("User is already a member of the group."));
             }
             group.getUsers().add(user);
             user.getGroups().add(group);
             groupRepository.save(group);
             userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).body("User successfully added to the group.");
+            return ResponseEntity.ok(new ApiResponse<>("User successfully added to the group."));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Group not found with ID: " + groupId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("Group not found with ID: " + groupId, null));
         }
     }
 
-    public ResponseEntity<String> leaveGroup(Long groupId) {
+    public ResponseEntity<ApiResponse<String>> leaveGroup(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
@@ -91,17 +95,18 @@ public class GroupServices {
                 groupRepository.save(group);
             }
             userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).body("User successfully left the group.");
+            return ResponseEntity.ok(new ApiResponse<>("User successfully left the group."));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Group not found with ID: " + groupId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("Group not found with ID: " + groupId, null));
         }
     }
 
-    public ResponseEntity<List<Group>> getMyGroups() {
+    public ResponseEntity<ApiResponse<List<Group>>> getMyGroups() {
         Long userId = userTokenServices.validateAndExtractUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         List<Group> myGroups = user.getGroups();
-        return ResponseEntity.status(HttpStatus.OK).body(myGroups);
+        return ResponseEntity.ok(new ApiResponse<>("Groups fetched successfully", myGroups));
     }
 }
