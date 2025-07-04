@@ -1,5 +1,6 @@
 package com.example.SynClock.controllers;
 
+import com.example.SynClock.model.ApiResponse;
 import com.example.SynClock.model.DTOs.CreateUserDTO;
 import com.example.SynClock.model.DTOs.UserDTO;
 import com.example.SynClock.model.User;
@@ -76,22 +77,17 @@ public class AuthController {
 //    }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody CreateUserDTO registerRequest) {
+    public <T> ResponseEntity<ApiResponse<T>> register(@RequestBody CreateUserDTO registerRequest) {
         if (userServices.getOneUserByUserName(registerRequest.getUsername()) != null) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Username already in use");
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+            ApiResponse<T> response = new ApiResponse<>("Username already in use");
+            return ResponseEntity.ok(response);
         }
 
         registerRequest.setUserpassword(passwordEncoder.encode(registerRequest.getUserpassword()));
         UserDTO savedUser = userServices.createAccount(registerRequest).getBody();
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "User successfully registered");
-        response.put("user", savedUser);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        ApiResponse<T> response = new ApiResponse<>("User successfully registered", (T) savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
 
 }
