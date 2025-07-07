@@ -11,7 +11,9 @@ import com.example.SynClock.model.AlarmClock;
 import com.example.SynClock.model.Group;
 import com.example.SynClock.model.DTOs.CreateAlarmClockDTO;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -49,4 +51,30 @@ public class AlarmClockService {
                 .body(new ApiResponse<>("Alarm not found: No alarm matching the given ID was found."));
     }
 
+    public ResponseEntity<ApiResponse<List<AlarmClockDTO>>> getAlarms(Long uuid){
+        Optional<Group> groupOptional = groupRepository.findById(uuid);
+        if (groupOptional.isPresent()){
+            List<AlarmClock> alarms = alarmClockRepository.findByGroupUuid(uuid);
+            List<AlarmClockDTO> alarmClockDTOS = alarms.stream()
+                    .map(AlarmClockDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<List<AlarmClockDTO>>("Alarms got received",alarmClockDTOS));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>("There is an error occurred"));
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
