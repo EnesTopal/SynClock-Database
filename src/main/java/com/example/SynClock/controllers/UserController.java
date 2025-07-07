@@ -1,9 +1,11 @@
 package com.example.SynClock.controllers;
 
+import com.example.SynClock.model.ApiResponse;
 import com.example.SynClock.model.DTOs.CreateUserDTO;
 import com.example.SynClock.model.DTOs.UserDTO;
 import com.example.SynClock.security.JwtGenerate;
 import com.example.SynClock.services.UserServices;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
+    public ResponseEntity<ApiResponse<String>> deleteAccount(@PathVariable Integer userId) {
         return userServices.deleteAccount(userId.longValue());
     }
 }

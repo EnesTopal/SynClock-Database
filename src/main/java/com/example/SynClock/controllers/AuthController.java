@@ -57,7 +57,8 @@ public class AuthController {
     public <T> ResponseEntity<ApiResponse<T>> register(@RequestBody CreateUserDTO registerRequest) {
         if (userServices.getOneUserByUserName(registerRequest.getUsername()) != null) {
             ApiResponse<T> response = new ApiResponse<>("Username already in use");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(response);
         }
 
         registerRequest.setUserpassword(passwordEncoder.encode(registerRequest.getUserpassword()));

@@ -1,5 +1,6 @@
 package com.example.SynClock.services;
 
+import com.example.SynClock.model.ApiResponse;
 import com.example.SynClock.model.DTOs.CreateUserDTO;
 import com.example.SynClock.model.Group;
 import com.example.SynClock.model.User;
@@ -34,7 +35,7 @@ public class UserServices {
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserDTO(savedUser));
     }
 
-    public ResponseEntity<String> deleteAccount (Long uuid){
+    public ResponseEntity<ApiResponse<String>> deleteAccount (Long uuid){
         Optional<User> userOptional = userRepository.findById(uuid);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -47,10 +48,10 @@ public class UserServices {
                 }
             }
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Success: User and associated data deleted successfully.");
+                    .body(new ApiResponse<>("Success: User and associated data deleted successfully."));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("User not found: No user matching the given ID was found.");
+                .body(new ApiResponse<>("User not found: No user matching the given ID was found."));
     }
 
     public User getOneUserByUserName(String Username) {

@@ -1,5 +1,6 @@
 package com.example.SynClock.services;
 
+import com.example.SynClock.model.ApiResponse;
 import com.example.SynClock.model.DTOs.AlarmClockDTO;
 import com.example.SynClock.repositories.AlarmClockRepository;
 import com.example.SynClock.repositories.GroupRepository;
@@ -24,7 +25,7 @@ public class AlarmClockService {
         this.groupRepository = groupRepository;
     }
 
-    public ResponseEntity<AlarmClockDTO> createAlarmClock(CreateAlarmClockDTO createAlarmClockDTO) {
+    public ResponseEntity<ApiResponse<AlarmClockDTO>> createAlarmClock(CreateAlarmClockDTO createAlarmClockDTO) {
         Group group = groupRepository.findById(createAlarmClockDTO.getGroupId().longValue())
                 .orElseThrow(() -> new RuntimeException("Group not found with ID: " + createAlarmClockDTO.getGroupId()));
 
@@ -32,19 +33,20 @@ public class AlarmClockService {
         alarmClock.setTime(createAlarmClockDTO.getTime());
         alarmClock.setGroup(group);
         AlarmClock savedAlarmClock = alarmClockRepository.save(alarmClock);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AlarmClockDTO(savedAlarmClock));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<AlarmClockDTO>("Alarm created", new AlarmClockDTO(savedAlarmClock)));
     }
 
-    public ResponseEntity<String> deleteAlarmClock(Long uuid){
+    public ResponseEntity<ApiResponse<String>> deleteAlarmClock(Long uuid) {
         Optional<AlarmClock> alarmClockOptional = alarmClockRepository.findById(uuid);
-        if (alarmClockOptional.isPresent()){
+        if (alarmClockOptional.isPresent()) {
             AlarmClock alarmClock = alarmClockOptional.get();
             alarmClockRepository.delete(alarmClock);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Success: Alarm and associated data deleted successfully.");
+                    .body(new ApiResponse<>("Success: Alarm and associated data deleted successfully."));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Alarm not found: No alarm matching the given ID was found.");
+                .body(new ApiResponse<>("Alarm not found: No alarm matching the given ID was found."));
     }
 
 }
