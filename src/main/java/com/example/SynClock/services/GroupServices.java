@@ -102,11 +102,14 @@ public class GroupServices {
         }
     }
 
-    public ResponseEntity<ApiResponse<List<Group>>> getMyGroups() {
+    public ResponseEntity<ApiResponse<List<GroupDTO>>> getMyGroups() {
         Long userId = userTokenServices.validateAndExtractUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-        List<Group> myGroups = user.getGroups();
-        return ResponseEntity.ok(new ApiResponse<>("Groups fetched successfully", myGroups));
+        List<GroupDTO> groupDTOs = user.getGroups().stream()
+                .map(GroupDTO::new)
+                .toList();
+
+        return ResponseEntity.ok(new ApiResponse<>("Groups fetched successfully", groupDTOs));
     }
 }

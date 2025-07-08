@@ -41,7 +41,7 @@ public class GroupController {
     }
 
     @GetMapping("/my-groups")
-    public ResponseEntity<ApiResponse<List<Group>>> getMyGroups() {
+    public ResponseEntity<ApiResponse<List<GroupDTO>>> getMyGroups() {
         return groupServices.getMyGroups();
     }
 }
