@@ -6,5 +6,5 @@ ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES user_groups (uuid) 
 ALTER TABLE user_to_groups
 ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_data (uuid) ON DELETE CASCADE;
 ALTER TABLE user_to_groups
-ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES user_groups (uuid) ON DELETE CASCADE;
+ADD CONSTRAINT fk_group_id_w_user FOREIGN KEY (group_id) REFERENCES user_groups (uuid) ON DELETE CASCADE;
 
